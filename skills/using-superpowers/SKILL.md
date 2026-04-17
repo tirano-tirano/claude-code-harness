@@ -36,10 +36,10 @@ If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the 
 | スキル | 用途 |
 |--------|------|
 | **development-cycle** | **★ コード変更を伴う作業では最初に呼ぶ。フロー判定とスキル使用順序の決定** |
-| brainstorming-with-docs | ブレインストーミング → ドキュメント出力（PRD, 要件定義等） |
+| brainstorming-with-docs | ブレインストーミング → ドキュメント出力（feature仕様, ADR等） |
 | writing-plans | 実装計画の作成 |
 | executing-plans | 計画に沿った実装の実行 |
-| document-lifecycle | ドキュメント駆動開発（PRD, API仕様, DB設計, テスト計画, ADR の作成・更新） |
+| document-lifecycle | ドキュメント駆動開発（feature仕様, architecture.md, notes/ の作成・更新） |
 | systematic-debugging | 体系的なデバッグ手法 |
 
 ## 実装系スキル（WHAT を作るスキル）
@@ -57,6 +57,7 @@ If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the 
 | スキル | 用途 |
 |--------|------|
 | project-setup | 既存プロジェクトの環境構築（依存インストール → 環境変数 → DB → 品質ツール → 動作確認） |
+| project-migration | 既存プロジェクトへの途中導入（コード・ドキュメントから architecture.md + feature ファイル群を一括生成） |
 
 ## 品質管理・コラボレーション系スキル
 
@@ -146,7 +147,8 @@ digraph skill_flow {
 | 「UIを作って」 | **development-cycle** | フロー D → ui-design → web-testing → 実装 |
 | 「仕様が変わった」 | **development-cycle** | フロー E → document-lifecycle → web-testing → 実装修正 |
 | 「テストを書いて」 | web-testing | — （コード変更なしならdevelopment-cycle不要） |
-| 「PRDを書いて」 | document-lifecycle | — （ドキュメントのみならdevelopment-cycle不要） |
+| 「feature仕様を書いて」 | document-lifecycle | — （ドキュメントのみならdevelopment-cycle不要） |
+| 「考えたい」「ブレスト」 | brainstorming-with-docs | — |
 | 「計画を立てて」 | brainstorming-with-docs → writing-plans | — |
 | 「レビューして」 | requesting-code-review | — |
 | 「セキュリティチェックして」 | security-review | — （修正が必要なら development-cycle フロー B） |
@@ -155,6 +157,7 @@ digraph skill_flow {
 | 「CI設定して」「Issue作って」 | remote-repository | — |
 | 「ESLint入れて」「コード規約を設定して」 | coding-standards | — |
 | 「環境構築して」「セットアップして」 | project-setup | — |
+| 「ハーネスを導入して」「既存プロジェクトに適用して」 | project-migration | — |
 
 ## Red Flags
 
@@ -180,7 +183,7 @@ These thoughts mean STOP—you're rationalizing:
 | "development-cycle は大げさ" | フローの判定は30秒で終わる。スキップのリスクの方が大きい。 |
 | "実装してからテストを書く" | TDD 鉄則違反。実装を削除してテストから書き直す。 |
 | "モックすればテストできる" | web-testing のモック許可制度を確認。DB・内部APIのモックは禁止。 |
-| "PRDなしで実装を始める" | document-lifecycle を呼ぶ。要件定義が先。 |
+| "feature仕様なしで実装を始める" | document-lifecycle を呼ぶ。要件定義が先。 |
 | "コードがドキュメント" | コードは HOW。WHY と WHAT はドキュメントに書く。 |
 | "セキュリティは後で確認" | security-review を呼ぶ。問題は早期発見が重要。 |
 | "コミットメッセージは適当でいい" | git-conventions を確認。Conventional Commits に従う。 |

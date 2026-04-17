@@ -80,13 +80,9 @@ tests/
     └── ...
 
 docs/                       # ドキュメント（document-lifecycle が管理）
-    ├── prd/
-    ├── api/
-    ├── db/
-    ├── test-plans/
-    ├── adr/
-    ├── ui/
-    └── journal/
+    ├── architecture.md     # 全体設計（DB一覧、API一覧、共通方針）
+    ├── features/           # 機能仕様（1機能 = 1ファイル。frontmatter に進捗を記録）
+    └── notes/              # 記録系（ブレスト、ADR、日誌等）
 ```
 
 ## 依存ルール（一方向依存）

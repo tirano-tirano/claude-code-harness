@@ -15,7 +15,10 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** The task section of the corresponding feature file at `docs/features/{feature-name}.md`
+- The feature file should already exist with 要求・要件・技術仕様 sections filled in
+- The plan populates the タスク section with detailed, checkboxed implementation steps
+- If the plan is too large for the feature file, save to `docs/superpowers/plans/YYYY-MM-DD-{feature-name}.md` and link from the feature file's タスク section
 - (User preferences for plan location override this default)
 
 ## Scope Check
@@ -135,7 +138,7 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 
 After saving the plan, offer execution choice:
 
-**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Two execution options:**
+**"Plan complete and saved to the feature file's task section (or `docs/superpowers/plans/<filename>.md` if oversized). Two execution options:**
 
 **1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 

@@ -45,11 +45,10 @@ description: |
 ```
 
 **必要なドキュメント：**
-- 新機能 → PRD（docs/prd/）が必須
-- API変更 → API仕様書（docs/api/）を更新
-- DB変更 → DB設計書（docs/db/）を更新
-- 技術判断 → ADR（docs/adr/）を作成
-- UI変更 → UI設計書（docs/ui/）を更新
+- 新機能 → docs/features/{番号}_{機能名}.md が必須（要求・要件・技術仕様・タスク）
+- API・DB変更 → feature ファイルの技術仕様セクション + docs/architecture.md を更新
+- UI変更 → feature ファイルの技術仕様 > UI セクションを更新
+- 技術判断 → docs/notes/{日付}_adr-{番号}_{タイトル}.md を作成
 
 **タイミング：**
 - 新規ドキュメントは**実装開始前**に作成する
@@ -102,10 +101,11 @@ description: |
 作業完了を宣言する前に、以下を確認する：
 - すべてのテストが通る
 - 新規・変更コードにテストが存在する
-- 影響を受けるドキュメントが更新されている
+- 影響を受けるドキュメントが更新されている（feature ファイル + architecture.md）
 - テスト出力にエラーや警告がない
+- feature ファイルのタスクチェックボックスと frontmatter（progress, status）を更新
 - セキュリティに影響する変更がある場合は **security-review** スキルでチェック
-- CLAUDE.md の更新が必要か確認（PRD追加、技術スタック変更、外部サービス追加等があった場合は **claude-md-generator** スキルで更新）
+- CLAUDE.md の更新が必要か確認（新機能追加、技術スタック変更、外部サービス追加等があった場合は **claude-md-generator** スキルで更新）
 - PR作成が必要な場合は **remote-repository** スキルのテンプレートに従う
 
 詳細は **verification-before-completion** スキルに従う。
@@ -119,51 +119,58 @@ description: |
 ```
 Step 1: 要件定義
 │  スキル: brainstorming-with-docs → document-lifecycle
-│  成果物: docs/prd/{feature}.md
-│  ドキュメント: PRD を作成
+│  成果物: docs/features/{番号}_{機能名}.md（要求・要件セクション）
+│  ドキュメント: feature ファイルを作成
 │
 Step 2: 設計
-│  ├── API設計 → docs/api/{endpoint-group}.md
-│  ├── DB設計 → docs/db/{domain}.md
-│  ├── UI設計 → ui-design スキル → docs/ui/
+│  ├── API設計 → feature ファイルの技術仕様 > API + architecture.md
+│  ├── DB設計 → feature ファイルの技術仕様 > DB + architecture.md
+│  ├── UI設計 → ui-design スキル → feature ファイルの技術仕様 > UI
 │  ├── ディレクトリ構成 → project-structure スキルに従う
-│  └── 技術判断 → docs/adr/{number}-{title}.md
+│  └── 技術判断 → docs/notes/{日付}_adr-{番号}_{タイトル}.md
 │  スキル: document-lifecycle, ui-design, project-structure
-│  ドキュメント: API仕様, DB設計, UI設計, ADR を作成
+│  ドキュメント: feature ファイルの技術仕様セクション + architecture.md を作成・更新
 │
 Step 3: テスト設計
 │  スキル: web-testing（Phase 1）
-│  成果物: docs/test-plans/{feature}.md + E2Eテストケース定義
-│  ドキュメント: テスト計画を作成
+│  成果物: feature ファイルの要件からE2Eテストケースを定義
 │
 Step 4: 実装（TDD サイクル）
 │  スキル: web-testing（Phase 2-3）, writing-plans / executing-plans
-│  コード規約: coding-standards スキルに従う
 │  手順: テストを書く → 失敗確認 → 最小実装 → 成功確認 → リファクタ → 繰り返し
+│  進捗: feature ファイルのタスクチェックボックスを完了ごとに更新
 │
 Step 5: 検証・完了
 │  スキル: security-review, verification-before-completion, web-testing（Phase 4-5）, claude-md-generator
 │  セキュリティ: 変更内容に応じたカテゴリをチェック（security-review のスコープ判定に従う）
-│  ドキュメント: 全ドキュメントが最新か確認
+│  ドキュメント: feature ファイル・architecture.md が最新か確認
+│  進捗: feature ファイルの frontmatter（progress, status）を更新
 │  CLAUDE.md: 新規プロジェクトの場合は claude-md-generator で生成
 │  Git: git-conventions に従いコミット、remote-repository に従いPR作成
 ```
 
 ### フロー A のチェックポイント
 
-- [ ] PRD が存在する（Step 1）
-- [ ] 設計ドキュメントが存在する（Step 2）
-- [ ] テスト計画が存在する（Step 3）
+- [ ] feature ファイルの要求・要件セクションが存在する（Step 1）
+- [ ] feature ファイルの技術仕様セクションと architecture.md が存在する（Step 2）
+- [ ] テストケースが要件から導出されている（Step 3）
 - [ ] すべてのテストが通る（Step 4）
-- [ ] ドキュメントがコードと一致している（Step 5）
+- [ ] ドキュメントがコードと一致し、進捗が更新されている（Step 5）
 
 ---
 
 ## フロー B: バグ修正
 
-**全体の流れ：** 再現する → 原因を特定する → 修正する → 回帰テストを確認する
+**全体の流れ：** feature ファイルにタスク追記 → 再現テストを書く → 原因を特定する → 修正する → 回帰テストを確認する
 
 ```
+Step 0: feature ファイルにバグ修正タスクを追記する
+│  スキル: document-lifecycle（バグ修正タスクの追記ルール）
+│  手順: バグが属する feature ファイルのタスクセクションに再現テスト + 修正のタスクを追記
+│  frontmatter: status を in-progress に、progress のタスク総数を更新
+│  ※ バグがどの feature に属するか不明な場合は、原因調査（Step 2）を先に行い、
+│    特定後に追記する
+│
 Step 1: バグの再現テストを書く
 │  スキル: web-testing
 │  手順: バグを再現するテストを書く → テスト実行 → 失敗することを確認
@@ -180,15 +187,18 @@ Step 3: 修正する
 Step 4: 回帰テスト・完了
 │  スキル: verification-before-completion
 │  手順: 既存テストがすべて通ることを確認
-│  ドキュメント: バグが仕様の曖昧さに起因する場合、PRD を明確化
+│  ドキュメント: バグが仕様の曖昧さに起因する場合、feature ファイルの要件を明確化
+│  frontmatter: 全タスク完了なら status を done に戻す
 ```
 
 ### フロー B のチェックポイント
 
+- [ ] feature ファイルにバグ修正タスクが追記されている（Step 0）
 - [ ] バグを再現するテストが存在する（Step 1）
 - [ ] テストが修正前に失敗し、修正後に成功する（Step 3）
 - [ ] 既存テストがすべて通る（Step 4）
-- [ ] 仕様の曖昧さがあれば PRD を更新済み（Step 4）
+- [ ] 仕様の曖昧さがあれば feature ファイルを更新済み（Step 4）
+- [ ] frontmatter の status と progress が最新（Step 4）
 
 ---
 
@@ -208,7 +218,7 @@ Step 2: リファクタリング
 Step 3: 完了
 │  スキル: verification-before-completion
 │  手順: すべてのテストが通ることを確認
-│  ドキュメント: アーキテクチャ変更があれば ADR を作成
+│  ドキュメント: アーキテクチャ変更があれば docs/notes/{日付}_adr-{番号}_{タイトル}.md を作成
 ```
 
 ### フロー C のチェックポイント
@@ -227,7 +237,7 @@ Step 3: 完了
 ```
 Step 1: UI設計
 │  スキル: ui-design
-│  成果物: docs/ui/ 配下の設計ドキュメント
+│  成果物: feature ファイルの技術仕様 > UI セクション
 │
 Step 2: E2Eテスト設計
 │  スキル: web-testing（Phase 1）
@@ -240,15 +250,15 @@ Step 3: 実装（TDD サイクル）
 │
 Step 4: ビジュアル・完了
 │  スキル: web-testing（Phase 3 ビジュアルテスト）, verification-before-completion
-│  ドキュメント: UI設計ドキュメントが実装と一致しているか確認
+│  ドキュメント: feature ファイルの UI セクションが実装と一致しているか確認
 ```
 
 ### フロー D のチェックポイント
 
-- [ ] UI設計ドキュメントが存在する（Step 1）
+- [ ] feature ファイルの UI セクションが存在する（Step 1）
 - [ ] E2Eテストケースが定義されている（Step 2）
 - [ ] ビジュアルテストが通る（Step 4）
-- [ ] UI設計ドキュメントが実装と一致している（Step 4）
+- [ ] feature ファイルの UI セクションが実装と一致している（Step 4）
 
 ---
 
@@ -267,7 +277,7 @@ Step 2: 影響範囲の特定
 │
 Step 3: ドキュメント更新
 │  スキル: document-lifecycle
-│  手順: PRD → API仕様 → DB設計 → テスト計画 → UI設計 の順に更新
+│  手順: feature ファイル（要求→要件→技術仕様）→ architecture.md の順に更新
 │  ※ ドキュメントを先に更新する。コード修正はその後。
 │
 Step 4: テスト更新
@@ -277,14 +287,15 @@ Step 4: テスト更新
 Step 5: 実装修正・完了
 │  手順: テストが通るように実装を修正
 │  スキル: verification-before-completion
-│  ドキュメント: すべてのドキュメントが新仕様と一致しているか確認
+│  ドキュメント: feature ファイル・architecture.md が新仕様と一致しているか確認
+│  進捗: feature ファイルのタスクチェックボックスと frontmatter（progress, status）を更新
 ```
 
 ### フロー E のチェックポイント
 
 - [ ] 変更理由が明確になっている（Step 1）
 - [ ] 影響範囲が特定されている（Step 2）
-- [ ] 影響を受けるドキュメントがすべて更新されている（Step 3）
+- [ ] 影響を受ける feature ファイルと architecture.md がすべて更新されている（Step 3）
 - [ ] テストが新仕様を反映している（Step 4）
 - [ ] すべてのテストが通る（Step 5）
 
@@ -298,7 +309,7 @@ Step 5: 実装修正・完了
 | 「小さい修正だからフロー不要」と思った | 小さい修正でもフロー B（バグ修正）または C（リファクタ）に該当する。 |
 | ドキュメントを更新せずにコミットしようとした | コミット前にドキュメントを更新する。 |
 | テスト計画なしに実装を始めた | Step を戻る。テスト設計が先。 |
-| PRD なしに新機能の実装を始めた | Step 1 に戻る。要件定義が先。 |
+| feature ファイルなしに新機能の実装を始めた | Step 1 に戻る。要件定義が先。 |
 | リファクタリング中に機能変更を混ぜた | 機能変更を取り消す。別作業として切り出す。 |
 | 仕様変更なのにコードだけ修正した | ドキュメント更新が先。Step 3 に戻る。 |
 | 「このフローは大げさ」と思った | フローの各 Step は省略不可。ただし成果物の量は作業規模に合わせてよい。 |
