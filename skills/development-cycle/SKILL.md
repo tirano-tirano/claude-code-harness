@@ -45,10 +45,12 @@ description: |
 ```
 
 **必要なドキュメント：**
-- 新機能 → docs/features/{番号}_{機能名}.md が必須（要求・要件・技術仕様・タスク）
+- 新機能 → docs/features/{番号}_{機能名}.md が必須（要求・要件・技術仕様・タスク + 関連 NFR）
+- 共通基盤 → docs/features/F-000-{番号}_{基盤名}.md（対応する NFR を参照）
 - API・DB変更 → feature ファイルの技術仕様セクション + docs/architecture.md を更新
-- UI変更 → feature ファイルの技術仕様 > UI セクションを更新
+- UI変更 → feature ファイルの技術仕様 > UI セクション + docs/design-system.md との整合性確認
 - 技術判断 → docs/notes/{日付}_adr-{番号}_{タイトル}.md を作成
+- 非機能要求の追加・変更 → docs/nfr/{カテゴリ}.md を更新
 
 **タイミング：**
 - 新規ドキュメントは**実装開始前**に作成する
@@ -104,6 +106,8 @@ description: |
 - 影響を受けるドキュメントが更新されている（feature ファイル + architecture.md）
 - テスト出力にエラーや警告がない
 - feature ファイルのタスクチェックボックスと frontmatter（progress, status）を更新
+- feature ファイルの関連 NFR セクションに列挙された NFR の遵守チェックリストを確認（docs/nfr/ 参照）
+- UI 変更がある場合は docs/design-system.md の共通パターンとの整合性を確認
 - セキュリティに影響する変更がある場合は **security-review** スキルでチェック
 - CLAUDE.md の更新が必要か確認（新機能追加、技術スタック変更、外部サービス追加等があった場合は **claude-md-generator** スキルで更新）
 - PR作成が必要な場合は **remote-repository** スキルのテンプレートに従う
