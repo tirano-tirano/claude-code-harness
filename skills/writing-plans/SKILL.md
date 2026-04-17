@@ -166,8 +166,8 @@ progress: 0/12         # タスク総数を設定
 **「タスクが feature ファイルに書き出されました。実行方法を選んでください：」**
 
 1. **Ralph Loop（推奨、夜間実行向き）** — `ralph` で自動実行。feature ファイルのタスクを上から順に処理
-2. **サブエージェント駆動** — superpowers:subagent-driven-development でタスクごとにサブエージェントを起動
-3. **インライン実行** — superpowers:executing-plans で現在のセッション内で順次実行
+2. **サブエージェント駆動** — claude-code-harness:subagent-driven-development でタスクごとにサブエージェントを起動
+3. **インライン実行** — claude-code-harness:executing-plans で現在のセッション内で順次実行
 
 ## Red Flags
 
