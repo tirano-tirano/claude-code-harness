@@ -1,6 +1,6 @@
 ---
 name: subagent-driven-development
-description: Use when executing implementation plans with independent tasks in the current session. 日本語トリガー: サブエージェント、タスク分割、分担して実装、並列実装
+description: "Use when executing implementation plans with independent tasks in the current session. 日本語トリガー: サブエージェント、タスク分割、分担して実装、並列実装"
 ---
 
 # Subagent-Driven Development

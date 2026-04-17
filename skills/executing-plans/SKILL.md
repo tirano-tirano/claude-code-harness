@@ -1,6 +1,6 @@
 ---
 name: executing-plans
-description: Use when you have a written implementation plan to execute in a separate session with review checkpoints. 日本語トリガー: 計画を実行、プランを実行、実装して、作って、進めて、計画通りに
+description: "Use when you have a written implementation plan to execute in a separate session with review checkpoints. 日本語トリガー: 計画を実行、プランを実行、実装して、作って、進めて、計画通りに"
 ---
 
 # Executing Plans

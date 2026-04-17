@@ -1,6 +1,6 @@
 ---
 name: project-migration
-description: Use when adopting claude-code-harness into an existing project. Generates architecture.md and feature files from existing code and documents. 日本語トリガー: 導入、移行、マイグレーション、既存プロジェクト、ハーネス導入、途中導入
+description: "Use when adopting claude-code-harness into an existing project. Generates architecture.md and feature files from existing code and documents. 日本語トリガー: 導入、移行、マイグレーション、既存プロジェクト、ハーネス導入、途中導入"
 ---
 
 # 既存プロジェクトへの claude-code-harness 導入

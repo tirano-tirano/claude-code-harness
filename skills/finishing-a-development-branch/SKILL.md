@@ -1,6 +1,6 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup. 日本語トリガー: ブランチ完了、マージ、PR作成、統合、ブランチ整理、開発完了
+description: "Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup. 日本語トリガー: ブランチ完了、マージ、PR作成、統合、ブランチ整理、開発完了"
 ---
 
 # Finishing a Development Branch

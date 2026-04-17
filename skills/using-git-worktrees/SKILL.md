@@ -1,6 +1,6 @@
 ---
 name: using-git-worktrees
-description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification. 日本語トリガー: ワークツリー、worktree、ブランチ分離、並行作業、隔離して作業
+description: "Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification. 日本語トリガー: ワークツリー、worktree、ブランチ分離、並行作業、隔離して作業"
 ---
 
 # Using Git Worktrees

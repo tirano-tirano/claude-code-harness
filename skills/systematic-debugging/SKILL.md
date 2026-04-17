@@ -1,6 +1,6 @@
 ---
 name: systematic-debugging
-description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes. 日本語トリガー: バグ、エラー、デバッグ、不具合、動かない、落ちる、失敗する、おかしい、テストが通らない、原因調査
+description: "Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes. 日本語トリガー: バグ、エラー、デバッグ、不具合、動かない、落ちる、失敗する、おかしい、テストが通らない、原因調査"
 ---
 
 # Systematic Debugging

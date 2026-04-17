@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Use when creating new skills, editing existing skills, or verifying skills work before deployment. 日本語トリガー: スキル作成、スキル編集、新しいスキル、スキルを作って
+description: "Use when creating new skills, editing existing skills, or verifying skills work before deployment. 日本語トリガー: スキル作成、スキル編集、新しいスキル、スキルを作って"
 ---
 
 # Writing Skills

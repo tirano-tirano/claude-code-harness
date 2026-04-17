@@ -1,6 +1,6 @@
 ---
 name: using-superpowers
-description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions. 日本語トリガー: スキル、何かを始める、作業開始
+description: "Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions. 日本語トリガー: スキル、何かを始める、作業開始"
 ---
 
 <SUBAGENT-STOP>

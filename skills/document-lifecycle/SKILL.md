@@ -1,6 +1,6 @@
 ---
 name: document-lifecycle
-description: Use when creating, updating, or managing project documents (feature specs, architecture, progress, ADR). Trigger on any feature planning, architecture decision, or implementation that should be documented. 日本語トリガー: ドキュメント、文書、要求、要件、仕様、設計、テスト、ADR、書いて、作成して、更新して、feature、architecture
+description: "Use when creating, updating, or managing project documents (feature specs, architecture, progress, ADR). Trigger on any feature planning, architecture decision, or implementation that should be documented. 日本語トリガー: ドキュメント、文書、要求、要件、仕様、設計、テスト、ADR、書いて、作成して、更新して、feature、architecture"
 ---
 
 # ドキュメント駆動開発（Document-Driven Development）

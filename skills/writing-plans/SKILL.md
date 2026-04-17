@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code. 日本語トリガー: 計画を立てて、プランを作って、実装計画、設計して、段取り、手順を考えて
+description: "Use when you have a spec or requirements for a multi-step task, before touching code. 日本語トリガー: 計画を立てて、プランを作って、実装計画、設計して、段取り、手順を考えて"
 ---
 
 # Writing Plans

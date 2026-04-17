@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always. 日本語トリガー: 完了、終わり、できた、コミット、PR、マージ、確認、検証、チェック
+description: "Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always. 日本語トリガー: 完了、終わり、できた、コミット、PR、マージ、確認、検証、チェック"
 ---
 
 # Verification Before Completion

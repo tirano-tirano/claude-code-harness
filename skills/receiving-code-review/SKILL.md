@@ -1,6 +1,6 @@
 ---
 name: receiving-code-review
-description: Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation. 日本語トリガー: レビュー指摘、レビューコメント、フィードバック、指摘を受けた、修正依頼
+description: "Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation. 日本語トリガー: レビュー指摘、レビューコメント、フィードバック、指摘を受けた、修正依頼"
 ---
 
 # Code Review Reception

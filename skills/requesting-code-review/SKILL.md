@@ -1,6 +1,6 @@
 ---
 name: requesting-code-review
-description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements. 日本語トリガー: レビュー依頼、レビューして、コードレビュー、確認してほしい、見てほしい
+description: "Use when completing tasks, implementing major features, or before merging to verify work meets requirements. 日本語トリガー: レビュー依頼、レビューして、コードレビュー、確認してほしい、見てほしい"
 ---
 
 # Requesting Code Review

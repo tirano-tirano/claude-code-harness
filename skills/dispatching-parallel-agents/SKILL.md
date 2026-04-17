@@ -1,6 +1,6 @@
 ---
 name: dispatching-parallel-agents
-description: Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies. 日本語トリガー: 並列、同時に、並行して、サブエージェント、分担、まとめてやって
+description: "Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies. 日本語トリガー: 並列、同時に、並行して、サブエージェント、分担、まとめてやって"
 ---
 
 # Dispatching Parallel Agents
