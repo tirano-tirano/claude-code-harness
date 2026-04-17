@@ -9,6 +9,5 @@
   "engines": {
     "claude-code": ">=2.0.0"
   },
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "skills": "./skills/"
 }
