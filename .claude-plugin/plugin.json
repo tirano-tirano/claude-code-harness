@@ -10,6 +10,5 @@
     "claude-code": ">=2.0.0"
   },
   "skills": "./skills/",
-  "agents": "./agents/",
   "hooks": "./hooks/hooks.json"
 }
