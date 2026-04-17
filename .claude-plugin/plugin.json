@@ -1,0 +1,15 @@
+{
+  "name": "superpowers-custom",
+  "description": "Forked from obra/superpowers. Document-driven development, comprehensive testing, UI design, and proven workflow skills for Claude Code.",
+  "version": "1.0.0",
+  "author": {
+    "name": "尚志"
+  },
+  "license": "MIT",
+  "engines": {
+    "claude-code": ">=2.0.0"
+  },
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "hooks": "./hooks/hooks.json"
+}

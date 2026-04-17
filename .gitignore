@@ -1,0 +1,10 @@
+.worktrees/
+.private-journal/
+.claude/
+.DS_Store
+node_modules/
+inspo
+triage/
+.env
+.env.*
+!.env.example
