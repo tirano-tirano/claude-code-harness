@@ -114,7 +114,7 @@ description: |
 
 ## フロー A: 新機能開発
 
-**全体の流れ：** 要件を固める → 設計する → テストを設計する → 実装する → 検証する
+**全体の流れ：** 要件を固める → 設計する → 計画を立てる → 実装する → 検証する
 
 ```
 Step 1: 要件定義
@@ -131,13 +131,16 @@ Step 2: 設計
 │  スキル: document-lifecycle, ui-design, project-structure
 │  ドキュメント: feature ファイルの技術仕様セクション + architecture.md を作成・更新
 │
-Step 3: テスト設計
-│  スキル: web-testing（Phase 1）
-│  成果物: feature ファイルの要件からE2Eテストケースを定義
+Step 3: 実装計画の策定
+│  スキル: writing-plans
+│  手順: 要求・要件・技術仕様からタスクを導出し、feature ファイルのタスクセクションに書き出す
+│  順序: 受け入れテスト → 統合テスト → 単体テスト → 実装 → 検証（外側→内側のテスト駆動）
+│  成果物: feature ファイルのタスクセクション（F-xxx-Txx 形式のチェックボックス）
+│  frontmatter: status を ready に、progress を 0/{タスク総数} に更新
 │
 Step 4: 実装（TDD サイクル）
-│  スキル: web-testing（Phase 2-3）, writing-plans / executing-plans
-│  手順: テストを書く → 失敗確認 → 最小実装 → 成功確認 → リファクタ → 繰り返し
+│  スキル: web-testing, executing-plans（または Ralph Loop / subagent-driven-development）
+│  手順: タスクを上から順に処理 → テストを書く → 失敗確認 → 最小実装 → 成功確認 → リファクタ → 繰り返し
 │  進捗: feature ファイルのタスクチェックボックスを完了ごとに更新
 │
 Step 5: 検証・完了
@@ -153,7 +156,7 @@ Step 5: 検証・完了
 
 - [ ] feature ファイルの要求・要件セクションが存在する（Step 1）
 - [ ] feature ファイルの技術仕様セクションと architecture.md が存在する（Step 2）
-- [ ] テストケースが要件から導出されている（Step 3）
+- [ ] feature ファイルのタスクセクションが外側→内側の順序で書かれている（Step 3）
 - [ ] すべてのテストが通る（Step 4）
 - [ ] ドキュメントがコードと一致し、進捗が更新されている（Step 5）
 
@@ -232,31 +235,32 @@ Step 3: 完了
 
 ## フロー D: UI改修
 
-**全体の流れ：** UI設計する → E2Eテストを設計する → 実装する → ビジュアルテストを確認する
+**全体の流れ：** UI設計する → 計画を立てる → 実装する → ビジュアルテストを確認する
 
 ```
 Step 1: UI設計
-│  スキル: ui-design
+│  スキル: ui-design, document-lifecycle
 │  成果物: feature ファイルの技術仕様 > UI セクション
 │
-Step 2: E2Eテスト設計
-│  スキル: web-testing（Phase 1）
-│  手順: ユーザー操作シナリオからテストケースを定義
-│  成果物: E2Eテストケース + ビジュアルテスト基準
+Step 2: 実装計画の策定
+│  スキル: writing-plans
+│  手順: UI仕様からタスクを導出（E2Eテスト → 統合テスト → コンポーネント実装）
+│  成果物: feature ファイルのタスクセクション
 │
 Step 3: 実装（TDD サイクル）
-│  スキル: web-testing（Phase 2-3）
-│  手順: テストを書く → 失敗確認 → UI実装 → 成功確認
+│  スキル: web-testing, executing-plans（または Ralph Loop）
+│  手順: タスクを上から順に処理 → テストを書く → 失敗確認 → UI実装 → 成功確認
 │
 Step 4: ビジュアル・完了
-│  スキル: web-testing（Phase 3 ビジュアルテスト）, verification-before-completion
+│  スキル: web-testing（ビジュアルテスト）, verification-before-completion
 │  ドキュメント: feature ファイルの UI セクションが実装と一致しているか確認
+│  進捗: feature ファイルの frontmatter（progress, status）を更新
 ```
 
 ### フロー D のチェックポイント
 
 - [ ] feature ファイルの UI セクションが存在する（Step 1）
-- [ ] E2Eテストケースが定義されている（Step 2）
+- [ ] feature ファイルのタスクセクションが存在する（Step 2）
 - [ ] ビジュアルテストが通る（Step 4）
 - [ ] feature ファイルの UI セクションが実装と一致している（Step 4）
 
@@ -264,7 +268,7 @@ Step 4: ビジュアル・完了
 
 ## フロー E: 仕様変更
 
-**全体の流れ：** 変更内容を整理する → 影響範囲を特定する → ドキュメントを更新する → テストを更新する → 実装を修正する
+**全体の流れ：** 変更内容を整理する → 影響範囲を特定する → ドキュメントを更新する → 計画を立てる → テスト更新・実装修正する
 
 ```
 Step 1: 変更内容の整理
@@ -280,12 +284,14 @@ Step 3: ドキュメント更新
 │  手順: feature ファイル（要求→要件→技術仕様）→ architecture.md の順に更新
 │  ※ ドキュメントを先に更新する。コード修正はその後。
 │
-Step 4: テスト更新
-│  スキル: web-testing
-│  手順: 新しい仕様に合わせてテストを修正 → 失敗確認（旧実装では失敗するはず）
+Step 4: 実装計画の策定
+│  スキル: writing-plans
+│  手順: 変更された仕様からタスクを導出し、feature ファイルのタスクセクションを更新
+│  ※ 既存タスクがある場合は追記・修正。影響範囲に応じてテスト修正→実装修正の順
 │
-Step 5: 実装修正・完了
-│  手順: テストが通るように実装を修正
+Step 5: テスト更新・実装修正・完了
+│  スキル: web-testing, executing-plans（または Ralph Loop）
+│  手順: 新しい仕様に合わせてテストを修正 → 失敗確認 → 実装を修正 → 成功確認
 │  スキル: verification-before-completion
 │  ドキュメント: feature ファイル・architecture.md が新仕様と一致しているか確認
 │  進捗: feature ファイルのタスクチェックボックスと frontmatter（progress, status）を更新

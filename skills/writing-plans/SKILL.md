@@ -1,155 +1,177 @@
 ---
 name: writing-plans
-description: "Use when you have a spec or requirements for a multi-step task, before touching code. 日本語トリガー: 計画を立てて、プランを作って、実装計画、設計して、段取り、手順を考えて"
+description: "Use when you have a feature file with 要求・要件・技術仕様 filled in and need to populate the タスク section with implementation steps. 日本語トリガー: 計画を立てて、プランを作って、実装計画、タスクに分解、段取り、手順を考えて"
 ---
 
-# Writing Plans
+# 実装計画の作成（Writing Plans）
 
-## Overview
+## 概要
 
-Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+feature ファイルの要求・要件・技術仕様を読み、**タスクセクション**に具体的な実装ステップを書き出す。
 
-Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+**基本原則：**
+- タスクは feature ファイルの `## タスク` セクションに `- [ ] F-xxx-Txx:` 形式で書く
+- 外側→内側のテスト駆動: 受け入れテスト → 統合テスト → 単体テスト → 実装の順
+- 各タスクは要求・要件・技術仕様への参照（`参照: R01, S01`）を持つ
+- Ralph Loop で自動実行可能な粒度にする
 
-**Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
+## 前提条件
 
-**Context:** This should be run in a dedicated worktree (created by brainstorming skill).
+このスキルを使う前に、以下が揃っていること：
 
-**Save plans to:** The task section of the corresponding feature file at `docs/features/{feature-name}.md`
-- The feature file should already exist with 要求・要件・技術仕様 sections filled in
-- The plan populates the タスク section with detailed, checkboxed implementation steps
-- If the plan is too large for the feature file, save to `docs/superpowers/plans/YYYY-MM-DD-{feature-name}.md` and link from the feature file's タスク section
-- (User preferences for plan location override this default)
+- feature ファイルが存在する（`docs/features/F-xxx_{機能名}.md`）
+- 要求セクション（R01, R02...）が書かれている
+- 要件セクション（S01, S02...）が書かれている
+- 技術仕様セクション（API-01, DB-01, UI-01...）が書かれている
 
-## Scope Check
+揃っていない場合は、先に **document-lifecycle** スキルで feature ファイルを完成させる。
 
-If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+## タスク設計の手順
 
-## File Structure
+### Step 1: スコープ確認
 
-Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+feature ファイルの要求・要件・技術仕様を通読し、以下を確認する：
 
-- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
-- You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
-- Files that change together should live together. Split by responsibility, not by technical layer.
-- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+- 未決事項（`## 未決事項`）に未解決の項目がないか
+- 要求と要件の対応が明確か
+- 技術仕様に抜けがないか
 
-This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+未決事項がある場合は、ユーザーに確認する。推測で進めない。
 
-## Bite-Sized Task Granularity
+### Step 2: ファイル構成の設計
 
-**Each step is one action (2-5 minutes):**
-- "Write the failing test" - step
-- "Run it to make sure it fails" - step
-- "Implement the minimal code to make the test pass" - step
-- "Run the tests and make sure they pass" - step
-- "Commit" - step
+タスクを定義する前に、作成・変更するファイルを洗い出す：
 
-## Plan Document Header
+- 新規作成するファイルと、その責務
+- 変更する既存ファイルと、変更内容
+- テストファイルの場所
 
-**Every plan MUST start with this header:**
+**原則：**
+- 各ファイルは1つの明確な責務を持つ
+- 一緒に変わるファイルは近くに置く（コロケーション）
+- 既存コードベースのパターンに従う
+- 詳細は **project-structure** スキルに従う
+
+### Step 3: タスクの作成
+
+以下の順序でタスクを並べる（外側→内側のテスト駆動）：
+
+```
+1. 受け入れテスト（要求から導出）— ユーザー視点の E2E テスト
+2. 統合テスト（要件から導出）— コンポーネント間の結合テスト
+3. 単体テスト + 実装（技術仕様から導出）— DB → API → UI の順
+4. 検証（全テスト通過、ドキュメント更新）
+```
+
+**テストと実装の対応：**
+
+| ドキュメント | テストの種類 | タスクの順序 |
+|------------|-----------|-----------|
+| 要求（R01, R02...） | 受け入れテスト（E2E） | 最初に書く |
+| 要件（S01, S02...） | 統合テスト | 次に書く |
+| 技術仕様（API-01, DB-01...） | 単体テスト + 実装 | 最後に書く |
+
+### Step 4: タスクの記述
+
+各タスクは以下の形式で書く：
 
 ```markdown
-# [Feature Name] Implementation Plan
+- [ ] F-xxx-Txx: やることの説明 （参照: R01, S01）
+```
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+**ルール：**
+- 1タスク = 1つの明確なアクション（テストを書く、実装する、等）
+- テストタスクと実装タスクはペアにする（テストが先）
+- 参照は、そのタスクが検証する要求・要件・技術仕様の管理番号
+- タスクの粒度は「Claude Code が1回の実行で完了できる」サイズ（Ralph Loop の1 iteration で1タスク）
 
-**Goal:** [One sentence describing what this builds]
+**具体的な記述例：**
 
-**Architecture:** [2-3 sentences about approach]
+```markdown
+## タスク
 
-**Tech Stack:** [Key technologies/libraries]
+受け入れテスト → 統合テスト → 単体テスト → 実装の順で並べる（外側→内側のテスト駆動）。
+テストは書いた時点では失敗してよい（Red 状態）。実装タスクで全テストを通す。
 
+<!-- 受け入れテスト（要求から導出） -->
+- [ ] F-001-T01: ユーザーが検索できる E2E テストを書く （参照: R01）
+- [ ] F-001-T02: 検索結果が10件ずつページングされる E2E テストを書く （参照: R02）
+
+<!-- 統合テスト（要件から導出） -->
+- [ ] F-001-T03: 検索API + DB の統合テストを書く （参照: S01, API-01, DB-01）
+- [ ] F-001-T04: 検索画面 + API の統合テストを書く （参照: S02, UI-01, API-01）
+
+<!-- 単体テスト + 実装（技術仕様から導出、DB → API → UI） -->
+- [ ] F-001-T05: xxx テーブルの単体テストを書く （参照: DB-01）
+- [ ] F-001-T06: xxx テーブルのマイグレーションを実装する （参照: DB-01）
+- [ ] F-001-T07: 検索 API の単体テストを書く （参照: API-01）
+- [ ] F-001-T08: 検索 API を実装する （参照: API-01）
+- [ ] F-001-T09: 検索画面の単体テストを書く （参照: UI-01）
+- [ ] F-001-T10: 検索画面を実装する （参照: UI-01）
+
+<!-- 検証 -->
+- [ ] F-001-T11: 全テストを実行し、パスすることを確認する
+- [ ] F-001-T12: feature ファイルと architecture.md が最新であることを確認する
+```
+
+### Step 5: 大規模な計画の分割
+
+タスクが 20 を超える場合は、feature ファイルを分割するか、フェーズに分けることを検討する：
+
+- 1つの feature が大きすぎる → feature を分割（document-lifecycle で対応）
+- 分割が不適切な場合 → フェーズコメントで区切り、Ralph Loop の `--max` を調整
+
+### Step 6: frontmatter の更新
+
+タスクを書き終えたら、feature ファイルの frontmatter を更新する：
+
+```yaml
+---
+id: F-001
+feature: 検索機能
+status: ready          # タスクが定義されたので ready に変更
+progress: 0/12         # タスク総数を設定
 ---
 ```
 
-## Task Structure
+### Step 7: セルフレビュー
 
-````markdown
-### Task N: [Component Name]
+計画を書き終えたら、以下をチェックする：
 
-**Files:**
-- Create: `exact/path/to/file.py`
-- Modify: `exact/path/to/existing.py:123-145`
-- Test: `tests/exact/path/to/test.py`
+1. **要求カバレッジ:** すべての要求（R01, R02...）に対応する受け入れテストタスクがあるか
+2. **要件カバレッジ:** すべての要件（S01, S02...）に対応する統合テストタスクがあるか
+3. **技術仕様カバレッジ:** すべての技術仕様（API-01, DB-01, UI-01...）に対応する単体テスト + 実装タスクがあるか
+4. **順序の正しさ:** 外側→内側の順になっているか（受け入れ→統合→単体→実装）
+5. **参照の正しさ:** 各タスクの `（参照: xxx）` が存在する管理番号を指しているか
+6. **粒度の適切さ:** 各タスクが1回の Claude Code 実行で完了可能か
 
-- [ ] **Step 1: Write the failing test**
+抜けがあれば追加する。
 
-```python
-def test_specific_behavior():
-    result = function(input)
-    assert result == expected
-```
+## 実行の引き渡し
 
-- [ ] **Step 2: Run test to verify it fails**
+計画完了後、実行方法を提示する：
 
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
+**「タスクが feature ファイルに書き出されました。実行方法を選んでください：」**
 
-- [ ] **Step 3: Write minimal implementation**
+1. **Ralph Loop（推奨、夜間実行向き）** — `ralph` で自動実行。feature ファイルのタスクを上から順に処理
+2. **サブエージェント駆動** — superpowers:subagent-driven-development でタスクごとにサブエージェントを起動
+3. **インライン実行** — superpowers:executing-plans で現在のセッション内で順次実行
 
-```python
-def function(input):
-    return expected
-```
+## Red Flags
 
-- [ ] **Step 4: Run test to verify it passes**
+| 思考 | 正しい対応 |
+|------|----------|
+| 「テスト後付けでいい」 | テストタスクを実装タスクの前に置く |
+| 「タスクが細かすぎる」 | Ralph Loop は1タスク1実行。細かくて良い |
+| 「参照は後で付ける」 | 参照なしのタスクは根拠がない。今付ける |
+| 「順序は実装者に任せる」 | 外側→内側の順序はスキルが決める |
+| 「TBD を入れておく」 | 未決定事項があるなら先に解決する |
+| 「似たタスクは省略」 | 各タスクは独立して読めるように書く（Ralph Loop の1実行でそのタスクだけ読む） |
 
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: PASS
+## 関連スキル
 
-- [ ] **Step 5: Commit**
-
-```bash
-git add tests/path/test.py src/path/file.py
-git commit -m "feat: add specific feature"
-```
-````
-
-## No Placeholders
-
-Every step must contain the actual content an engineer needs. These are **plan failures** — never write them:
-- "TBD", "TODO", "implement later", "fill in details"
-- "Add appropriate error handling" / "add validation" / "handle edge cases"
-- "Write tests for the above" (without actual test code)
-- "Similar to Task N" (repeat the code — the engineer may be reading tasks out of order)
-- Steps that describe what to do without showing how (code blocks required for code steps)
-- References to types, functions, or methods not defined in any task
-
-## Remember
-- Exact file paths always
-- Complete code in every step — if a step changes code, show the code
-- Exact commands with expected output
-- DRY, YAGNI, TDD, frequent commits
-
-## Self-Review
-
-After writing the complete plan, look at the spec with fresh eyes and check the plan against it. This is a checklist you run yourself — not a subagent dispatch.
-
-**1. Spec coverage:** Skim each section/requirement in the spec. Can you point to a task that implements it? List any gaps.
-
-**2. Placeholder scan:** Search your plan for red flags — any of the patterns from the "No Placeholders" section above. Fix them.
-
-**3. Type consistency:** Do the types, method signatures, and property names you used in later tasks match what you defined in earlier tasks? A function called `clearLayers()` in Task 3 but `clearFullLayers()` in Task 7 is a bug.
-
-If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
-
-## Execution Handoff
-
-After saving the plan, offer execution choice:
-
-**"Plan complete and saved to the feature file's task section (or `docs/superpowers/plans/<filename>.md` if oversized). Two execution options:**
-
-**1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
-
-**2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints
-
-**Which approach?"**
-
-**If Subagent-Driven chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
-- Fresh subagent per task + two-stage review
-
-**If Inline Execution chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:executing-plans
-- Batch execution with checkpoints for review
+- **document-lifecycle** — feature ファイルの作成・更新（このスキルの前提）
+- **web-testing** — テスト戦略・TDD サイクルの詳細
+- **executing-plans** — 計画のインライン実行
+- **subagent-driven-development** — サブエージェントによる並列実行
+- **project-structure** — ファイル構成の設計原則

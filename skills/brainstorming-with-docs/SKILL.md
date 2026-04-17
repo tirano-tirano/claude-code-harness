@@ -177,7 +177,7 @@ progress: 0/0
 - UI設計を詳細化（ui-design スキル）
 - タスクセクションを策定（writing-plans スキル）— 外側→内側のテスト駆動: 受け入れテスト→統合テスト→単体テスト→実装
 - architecture.md に横断情報を反映
-- Ralph Loop で自動実行: `ralph --todo docs/features/F-xxx_yyy.md`（feature ファイルは自動検出される）
+- Ralph Loop で自動実行: `ralph`（`docs/features/` の feature ファイルを自動検出して順次処理）
 
 ---
 

@@ -7,14 +7,13 @@ Use this template when dispatching a code quality reviewer subagent.
 **Only dispatch after spec compliance review passes.**
 
 ```
-Task tool (superpowers:code-reviewer):
-  Use template at requesting-code-review/code-reviewer.md
+サブエージェントに requesting-code-review/code-reviewer.md のテンプレートを渡す:
 
-  WHAT_WAS_IMPLEMENTED: [from implementer's report]
-  PLAN_OR_REQUIREMENTS: Task N from [plan-file]
-  BASE_SHA: [commit before task]
-  HEAD_SHA: [current commit]
-  DESCRIPTION: [task summary]
+  WHAT_WAS_IMPLEMENTED: [実装者の報告から]
+  PLAN_OR_REQUIREMENTS: F-xxx-Txx のタスク内容（feature ファイルから抽出）
+  BASE_SHA: [タスク開始前のコミット]
+  HEAD_SHA: [現在のコミット]
+  DESCRIPTION: [タスクの概要]
 ```
 
 **In addition to standard code quality concerns, the reviewer should check:**

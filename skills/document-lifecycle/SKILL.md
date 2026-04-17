@@ -288,9 +288,11 @@ feature ファイルは Ralph Loop の TODO.md としても機能する。以下
 - タスクの `- [ ]` / `- [x]`: そのタスクが完了したか（Ralph Loop の処理対象）
 
 **Ralph Loop との連携:**
-- feature ファイルを `ralph --todo docs/features/F-001_xxx.md` で直接指定するだけでよい
-- Ralph Loop が feature ファイルを自動検出し、タスク行（`F-xxx-T` を含む `- [ ]` 行）のみを完了判定に使う
-- Ralph Loop がタスクを全て `[x]` にしたらループ終了
+- `ralph` を実行するだけで、`docs/features/` の feature ファイルを自動検出し、F-xxx 番号順に順次処理する（TODO.md 不要）
+- タスク行（`F-xxx-T` を含む `- [ ]` 行）のみを完了判定に使う。要求・要件のチェックボックスは無視される
+- 1つの feature の全タスクが `[x]` になると、次の feature へ自動移行する
+- `status: done` の feature はスキップされる
+- 1ファイルだけ指定する場合: `ralph --todo docs/features/F-001_xxx.md`
 
 **frontmatter の status:**
 - `draft`: 要求・要件の定義中

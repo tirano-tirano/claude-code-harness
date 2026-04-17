@@ -1,70 +1,116 @@
 ---
 name: executing-plans
-description: "Use when you have a written implementation plan to execute in a separate session with review checkpoints. 日本語トリガー: 計画を実行、プランを実行、実装して、作って、進めて、計画通りに"
+description: "Use when you have a feature file with タスク section populated and want to execute tasks inline (same session). For automated execution, use Ralph Loop instead. 日本語トリガー: 計画を実行、プランを実行、実装して、作って、進めて、計画通りに"
 ---
 
-# Executing Plans
+# 計画の実行（Executing Plans）
 
-## Overview
+## 概要
 
-Load plan, review critically, execute all tasks, report when complete.
+feature ファイルのタスクセクションに書かれた計画を、現在のセッション内で順次実行する。
 
-**Announce at start:** "I'm using the executing-plans skill to implement this plan."
+**基本原則：**
+- feature ファイルのチェックボックス（`- [ ]` → `- [x]`）が進捗の「正」の記録
+- タスクは上から順に処理する（外側→内側のテスト駆動順序を守る）
+- 1タスクごとに TDD サイクル（Red → Green → Refactor）を回す
 
-**Note:** Tell your human partner that Superpowers works much better with access to subagents. The quality of its work will be significantly higher if run on a platform with subagent support (such as Claude Code or Codex). If subagents are available, use superpowers:subagent-driven-development instead of this skill.
+## 実行方法の選択
 
-## The Process
+タスクを実行する方法は3つある。状況に応じて選ぶ：
 
-### Step 1: Load and Review Plan
-1. Read plan file
-2. Review critically - identify any questions or concerns about the plan
-3. If concerns: Raise them with your human partner before starting
-4. If no concerns: Create TodoWrite and proceed
+| 方法 | 適する場面 | スキル |
+|------|----------|--------|
+| **Ralph Loop** | 夜間実行、大量タスク、無人運用 | `ralph` コマンド |
+| **サブエージェント駆動** | タスクごとにレビューしたい、並列実行 | subagent-driven-development |
+| **インライン実行（このスキル）** | 対話しながら進めたい、小規模タスク | executing-plans |
 
-### Step 2: Execute Tasks
+Ralph Loop は feature ファイルを自動検出して順次処理するため、最も手軽。
+サブエージェント駆動はサブエージェント対応環境（Claude Code 等）が必要。
 
-For each task:
-1. Mark as in_progress
-2. Follow each step exactly (plan has bite-sized steps)
-3. Run verifications as specified
-4. Mark as completed
+## インライン実行の手順
 
-### Step 3: Complete Development
+### Step 1: 計画の確認
 
-After all tasks complete and verified:
-- Announce: "I'm using the finishing-a-development-branch skill to complete this work."
-- **REQUIRED SUB-SKILL:** Use superpowers:finishing-a-development-branch
-- Follow that skill to verify tests, present options, execute choice
+1. feature ファイルを読み、タスクセクションを確認する
+2. 以下をチェック：
+   - タスクが外側→内側の順序になっているか
+   - 各タスクに参照（`参照: R01, S01`）があるか
+   - 未完了タスク（`- [ ]`）がいくつあるか
+3. 問題があればユーザーに確認してから進む
 
-## When to Stop and Ask for Help
+### Step 2: タスクの順次実行
 
-**STOP executing immediately when:**
-- Hit a blocker (missing dependency, test fails, instruction unclear)
-- Plan has critical gaps preventing starting
-- You don't understand an instruction
-- Verification fails repeatedly
+未完了タスクを上から1つずつ処理する。各タスクで：
 
-**Ask for clarification rather than guessing.**
+1. **テストタスクの場合：**
+   - テストを書く
+   - テストを実行する → **失敗することを確認**（Red 状態）
+   - feature ファイルのチェックボックスを `[x]` にする
 
-## When to Revisit Earlier Steps
+2. **実装タスクの場合：**
+   - 最小限のコードを書く
+   - テストを実行する → **成功することを確認**（Green 状態）
+   - コードを整理する（Refactor）→ テストが緑のままであることを確認
+   - feature ファイルのチェックボックスを `[x]` にする
 
-**Return to Review (Step 1) when:**
-- Partner updates the plan based on your feedback
-- Fundamental approach needs rethinking
+3. **検証タスクの場合：**
+   - 全テストを実行する
+   - ドキュメントの整合性を確認する
+   - feature ファイルのチェックボックスを `[x]` にする
 
-**Don't force through blockers** - stop and ask.
+**各タスク完了時に frontmatter の progress を更新する：**
 
-## Remember
-- Review plan critically first
-- Follow plan steps exactly
-- Don't skip verifications
-- Reference skills when plan says to
-- Stop when blocked, don't guess
-- Never start implementation on main/master branch without explicit user consent
+```yaml
+progress: 3/12    # 完了数/総数
+```
 
-## Integration
+### Step 3: チェックポイント
 
-**Required workflow skills:**
-- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **superpowers:writing-plans** - Creates the plan this skill executes
-- **superpowers:finishing-a-development-branch** - Complete development after all tasks
+**3タスクごと**に以下を確認する：
+
+- 全テストが通るか
+- コードの品質に問題がないか
+- feature ファイルの進捗が正しいか
+
+問題があれば、次のタスクに進む前に修正する。
+
+### Step 4: 完了
+
+すべてのタスクが `[x]` になったら：
+
+1. 全テストを実行し、パスすることを確認
+2. feature ファイルの frontmatter を更新：
+   ```yaml
+   status: done
+   progress: 12/12
+   ```
+3. architecture.md が最新であることを確認
+4. **verification-before-completion** スキルで最終検証
+5. **git-conventions** スキルに従いコミット
+
+## ブロッカーへの対応
+
+**実行中に問題が発生したら：**
+
+- テストが想定外の理由で失敗する → **systematic-debugging** スキルで原因調査
+- 要件の解釈が曖昧 → ユーザーに確認。推測で進めない
+- タスクの前提が崩れた → 計画を修正（writing-plans で再検討）
+- 3回以上修正を試みて解決しない → 停止してユーザーに報告
+
+## Red Flags
+
+| 思考 | 正しい対応 |
+|------|----------|
+| 「テストをスキップして実装だけ進める」 | テストタスクを飛ばさない。順序通りに処理する |
+| 「チェックボックスの更新は後でまとめて」 | 1タスクごとに即座に更新する |
+| 「このタスクは簡単だから検証不要」 | 全タスクでテスト実行は必須 |
+| 「ブロッカーだが自分で判断して進む」 | 停止してユーザーに確認する |
+
+## 関連スキル
+
+- **writing-plans** — タスクセクションの作成（このスキルの前提）
+- **web-testing** — TDD サイクルの詳細
+- **systematic-debugging** — 実行中の問題への対応
+- **verification-before-completion** — 全タスク完了後の最終検証
+- **git-conventions** — コミット規約
+- **finishing-a-development-branch** — ブランチの完了・マージ

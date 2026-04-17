@@ -55,13 +55,20 @@ progress: 0/9
 
 ### Ralph Loop との連携
 
-feature ファイルを Ralph Loop の進捗ファイルとして直接指定できる。
+feature ファイルを Ralph Loop の進捗ファイルとして直接使える。TODO.md は不要。
+
+```bash
+# docs/features/ の feature ファイルを自動検出して F-xxx 番号順に順次処理
+ralph
+```
+
+Ralph Loop は `docs/features/` から未完了の feature ファイルを自動検出し、タスク行（`F-xxx-T` を含む `- [ ]` 行）のみを完了判定に使う。`status: done` の feature はスキップされる。1つの feature が完了したら次の feature へ自動移行する。
+
+1ファイルだけ指定することもできる:
 
 ```bash
 ralph --todo docs/features/F-001_user-registration.md
 ```
-
-Ralph Loop が feature ファイルを自動検出し、タスク行（`F-xxx-T` を含む `- [ ]` 行）のみを完了判定に使う。
 
 ## スキル一覧
 
