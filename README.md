@@ -78,6 +78,20 @@ Ralph Loop は `docs/features/` から未完了の feature ファイルを自動
 ralph --todo docs/features/F-001_user-registration.md
 ```
 
+### ツール生成ファイルの配置
+
+自作ツールの出力ファイルは `.toolname/` ディレクトリにまとめる。標準ツール（npm, Next.js 等）はデフォルトに従う。
+
+```
+.ralph/                     # Ralph Loop の作業ディレクトリ
+├── PROMPT.md               #   実行指示テンプレート（git 管理）
+├── SCRATCH.md              #   作業中の一時メモ（gitignore）
+├── archive/                #   古い SCRATCH.md の退避先（gitignore）
+└── logs/                   #   実行ログ（gitignore）
+```
+
+git 管理の基準は「消えたら困るか？」。ツールの設定・テンプレートは git 管理し、一時ファイル・ログ・キャッシュは gitignore する。詳細は project-structure スキルを参照。
+
 ## スキル一覧
 
 ### プロセス系スキル（HOW を決めるスキル）

@@ -231,6 +231,59 @@ export default function Page() {
 
 **1機能ずつ移動する理由：** 一度に全部動かすと壊れたときに原因特定が困難。
 
+## ツール生成ファイルの配置ルール
+
+開発ツール（Ralph、ビルドツール、テストツール等）が生成するファイルの配置方針。
+
+### 基本原則
+
+1. **自作ツールは `.toolname/` にまとめる** — ルート直下の散乱を防ぐ。`.git/`、`.next/` と同じ慣習
+2. **標準ツールはデフォルトに従う** — `node_modules/`、`.next/`、`coverage/` 等は変えない
+3. **git 管理の判断基準** — 「消えたら困るか？」で決める。再生成できるものは gitignore
+
+### 自作ツールの配置パターン
+
+各ツールは `.toolname/` ディレクトリにまとめる：
+
+```
+.ralph/                     # Ralph Loop の作業ディレクトリ
+├── PROMPT.md               #   実行指示テンプレート（git 管理）
+├── SCRATCH.md              #   作業中の一時メモ（gitignore）
+├── archive/                #   古い SCRATCH.md の退避先（gitignore）
+└── logs/                   #   実行ログ（gitignore）
+```
+
+### git 管理の分類
+
+| 分類 | git 管理 | 例 |
+|------|---------|---|
+| ツールの設定・テンプレート | する | `.ralph/PROMPT.md` |
+| 作業中の一時ファイル | しない | `.ralph/SCRATCH.md` |
+| ログ・アーカイブ | しない | `.ralph/logs/`、`.ralph/archive/` |
+| ビルド・キャッシュ | しない | `.next/`、`node_modules/`、`coverage/` |
+| ドキュメント | する | `docs/`（feature, architecture, notes, nfr） |
+
+### .gitignore の記述例
+
+```gitignore
+# Ralph
+.ralph/SCRATCH.md
+.ralph/archive/
+.ralph/logs/
+
+# Build & Cache
+.next/
+node_modules/
+coverage/
+```
+
+### 新しいツールを追加するとき
+
+1. `.toolname/` ディレクトリを作成する
+2. git 管理するファイルと gitignore するファイルを分類する
+3. `.gitignore` にエントリを追加する
+4. このセクションの表にツール情報を追記する
+
 ## Red Flags — 以下に該当したら立ち止まること
 
 | Red Flag | 正しい対応 |
@@ -243,3 +296,5 @@ export default function Page() {
 | src/ 直下にファイルを置いた | 該当するフォルダに移動する |
 | テストファイルを tests/ にまとめた（E2E以外） | テスト対象の隣に移動する（コロケーション） |
 | index.ts なしで feature の内部を直接参照した | index.ts を作成し、公開 API を定義する |
+| ツールの出力ファイルをルート直下に置いた | `.toolname/` ディレクトリにまとめる |
+| ツールのログや一時ファイルを git 管理した | 再生成できるものは gitignore する |
