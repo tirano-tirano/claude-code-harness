@@ -49,7 +49,7 @@ description: |
 - 共通基盤 → docs/features/F-000-{番号}_{基盤名}.md（対応する NFR を参照）
 - API・DB変更 → feature ファイルの技術仕様セクション + docs/architecture.md を更新
 - UI変更 → feature ファイルの技術仕様 > UI セクション + docs/design-system.md との整合性確認
-- 技術判断 → docs/notes/{日付}_adr-{番号}_{タイトル}.md を作成
+- 技術判断 → docs/notes/{日時}_adr-{番号}_{タイトル}.md を作成
 - 非機能要求の追加・変更 → docs/nfr/{カテゴリ}.md を更新
 
 **タイミング：**
@@ -268,7 +268,7 @@ Step 2: 設計
 │  ├── DB設計 → feature ファイルの技術仕様 > DB + architecture.md
 │  ├── UI設計 → ui-design スキル → feature ファイルの技術仕様 > UI
 │  ├── ディレクトリ構成 → project-structure スキルに従う
-│  └── 技術判断 → docs/notes/{日付}_adr-{番号}_{タイトル}.md
+│  └── 技術判断 → docs/notes/{日時}_adr-{番号}_{タイトル}.md
 │  スキル: document-lifecycle, ui-design, project-structure
 │  ドキュメント: feature ファイルの技術仕様セクション + architecture.md を作成・更新
 │
@@ -362,7 +362,7 @@ Step 2: リファクタリング
 Step 3: 完了
 │  スキル: verification-before-completion
 │  手順: すべてのテストが通ることを確認
-│  ドキュメント: アーキテクチャ変更があれば docs/notes/{日付}_adr-{番号}_{タイトル}.md を作成
+│  ドキュメント: アーキテクチャ変更があれば docs/notes/{日時}_adr-{番号}_{タイトル}.md を作成
 ```
 
 ### フロー C のチェックポイント
