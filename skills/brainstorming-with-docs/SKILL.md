@@ -11,6 +11,8 @@ description: Use when exploring ideas, defining requirements, or planning featur
 
 **基本原則：** ブレインストーミングのゴールは「話し合うこと」ではなく「判断可能な状態を作ること」。
 
+**学習ガイド:** 設計判断の場面・選択肢の比較時に **learning-guide** スキルを参照し、CLAUDE.md の説明レベル設定に応じて概念・判断理由をユーザーに説明する。説明レベルが 0 の場合はスキップする。
+
 
 ## 3 つの Phase
 

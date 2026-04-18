@@ -68,6 +68,12 @@ If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the 
 | receiving-code-review | コードレビュー指摘への対応 |
 | security-review | セキュリティチェック（OWASP Top 10:2025、Next.js固有、インフラ設定） |
 
+## 学習支援スキル
+
+| スキル | 用途 |
+|--------|------|
+| learning-guide | 開発作業中の概念・仕組み・判断理由の説明。他スキルから自動呼び出し。まとめモードあり |
+
 ## Git・ワークフロー系スキル
 
 | スキル | 用途 |

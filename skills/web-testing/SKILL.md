@@ -6,6 +6,8 @@ description: "Use when writing, running, or designing tests for web applications
 
 Next.js（React）ウェブアプリケーションのテストをClaude Codeが実施するためのSkill。
 
+**学習ガイド:** テスト種類の選択時・テスト戦略の決定時に **learning-guide** スキルを参照し、CLAUDE.md の説明レベル設定に応じてテスト概念をユーザーに説明する。説明レベルが 0 の場合はスキップする。
+
 ## 基本理念
 
 **テストの目的 = ユーザーがやりたいことができることを確認する**
