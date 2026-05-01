@@ -61,14 +61,13 @@
 ├── .claude-plugin/plugin.json    プラグインメタデータ
 ├── README.md                     ユーザー向け説明
 ├── CLAUDE.md                     このファイル（開発者向けガイド）
-├── agents/                       特化エージェント定義
+├── agents/                       特化エージェント定義（code-explorer, code-reviewer）
 ├── commands/                     スラッシュコマンド定義
 ├── hooks/                        セッションフック
-├── skills/                       スキル本体（26+）
+├── skills/                       スキル本体（25 個）
 ├── docs/
-│   ├── notes/                    開発メモ・ADR・ふりかえり
-│   └── windows/                  Windows 環境固有の補足（活用中なら残す）
-└── tests/                        スキルテスト基盤（位置づけ要整理）
+│   └── notes/                    開発メモ・ADR・ふりかえり
+└── scripts/                      バージョン管理等のメンテナンススクリプト
 ```
 
 ## Pull Request について
