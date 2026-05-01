@@ -119,6 +119,24 @@ You MUST complete each phase before proceeding to the next.
    - Keep tracing up until you find the source
    - Fix at source, not at symptom
 
+6. **既存コードの周辺を `code-explorer` で調査する（既存プロジェクトの場合）**
+
+   バグ修正の対象機能が大きい・複雑な場合、エラー周辺のコードを先に
+   構造的に把握しておくと根本原因の発見が早くなる。
+
+   ```
+   code-explorer エージェントへの指示例:
+   "{バグが起きている機能} の実行フロー（エントリーポイント →
+   データ層）と、{エラーが出ているファイル} の周辺で使われている
+   既存パターンを調査せよ。必読ファイルリストも返せ。"
+   ```
+
+   **必須: エージェントが返した必読ファイルリストをすべて Read する**
+   （`dispatching-parallel-agents` の必読ルール参照）
+
+   読まずに進めるとコード全体の前提を見落とし、症状だけ消す対症療法
+   になる。
+
 ### Phase 2: Pattern Analysis
 
 **Find the pattern before fixing:**
