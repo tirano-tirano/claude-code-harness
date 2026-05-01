@@ -268,12 +268,26 @@ Step 1: 要件定義
 │  ドキュメント: feature ファイルを作成
 │
 Step 2: 設計
-│  ├── API設計 → feature ファイルの技術仕様 > API + architecture.md
-│  ├── DB設計 → feature ファイルの技術仕様 > DB + architecture.md
-│  ├── UI設計 → ui-design スキル → feature ファイルの技術仕様 > UI
-│  ├── ディレクトリ構成 → project-structure スキルに従う
-│  └── 技術判断 → docs/notes/{日時}_adr-{番号}_{タイトル}.md
-│  スキル: document-lifecycle, ui-design, project-structure
+│  ※ 既存プロジェクトに追加する場合は、設計に着手する前に
+│    code-explorer エージェントで類似機能・関連領域を調査する。
+│    （新規プロジェクトの場合はスキップ可）
+│
+│  Step 2-0: 既存コードの調査（既存プロジェクトのみ）
+│    エージェント: code-explorer ×2-3 並列起動
+│      ├── 類似機能のトレース
+│      ├── アーキテクチャの把握（既存の抽象化レイヤー）
+│      └── 関連 NFR 該当箇所の確認
+│    必須: エージェントが返した「必読ファイルリスト」をすべて Read する
+│    （dispatching-parallel-agents の必読ルール参照）
+│
+│  Step 2-1: 設計の書き起こし
+│    ├── API設計 → feature ファイルの技術仕様 > API + architecture.md
+│    ├── DB設計 → feature ファイルの技術仕様 > DB + architecture.md
+│    ├── UI設計 → ui-design スキル → feature ファイルの技術仕様 > UI
+│    ├── ディレクトリ構成 → project-structure スキルに従う
+│    └── 技術判断 → docs/notes/{日時}_adr-{番号}_{タイトル}.md
+│  スキル: document-lifecycle, ui-design, project-structure, dispatching-parallel-agents
+│  エージェント: code-explorer（既存プロジェクトの場合）
 │  ドキュメント: feature ファイルの技術仕様セクション + architecture.md を作成・更新
 │
 Step 3: 実装計画の策定
@@ -421,8 +435,12 @@ Step 1: 変更内容の整理
 │  手順: 何が変わるのか、なぜ変わるのかを明確にする
 │
 Step 2: 影響範囲の特定
-│  手順: 変更が影響する画面、API、DB、テストを洗い出す
-│  成果物: 影響範囲リスト
+│  エージェント: code-explorer（変更対象の機能ごとに1つ起動）
+│    └── 変更前の実装を調査し、影響を受けるファイル・テスト・NFR を洗い出す
+│  必須: エージェントが返した「必読ファイルリスト」をすべて Read する
+│  手順: 調査結果をもとに、変更が影響する画面、API、DB、テストを洗い出す
+│  成果物: 影響範囲リスト（feature ID + 該当ファイル一覧 + 影響する NFR）
+│  スキル: dispatching-parallel-agents
 │
 Step 3: ドキュメント更新
 │  スキル: document-lifecycle
