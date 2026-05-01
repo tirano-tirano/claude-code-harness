@@ -1,4 +1,5 @@
 ---
+name: web-testing
 description: "Use when writing, running, or designing tests for web applications. 日本語トリガー: テスト、テストを書いて、TDD、E2E、単体テスト、統合テスト、Playwright、Vitest、テスト戦略、モック"
 ---
 

@@ -64,9 +64,10 @@ If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the 
 | スキル | 用途 |
 |--------|------|
 | verification-before-completion | 作業完了前の検証チェック |
-| requesting-code-review | コードレビュー依頼の出し方 |
+| requesting-code-review | コードレビュー依頼の出し方（信頼度80以上の指摘のみ取得） |
 | receiving-code-review | コードレビュー指摘への対応 |
 | security-review | セキュリティチェック（OWASP Top 10:2025、Next.js固有、インフラ設定） |
+| retrospective | feature 完了時の KPT 形式振り返り |
 
 ## 学習支援スキル
 
@@ -79,15 +80,16 @@ If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the 
 | スキル | 用途 |
 |--------|------|
 | git-conventions | コミットメッセージ規約（Conventional Commits）、ブランチ命名規則、コンフリクト解消 |
-| remote-repository | PR/MR作成、Issue管理、CI/CD設定（GitHub/GitLab/Bitbucket対応） |
+| remote-repository | PR/MR作成、Issue管理、CI/CD設定（feature ファイルから PR description 自動生成） |
 | using-git-worktrees | Git worktree を使った並行作業 |
 | finishing-a-development-branch | 開発ブランチの完了・マージ手順 |
+| recovering-from-mistake | ワークフロー違反・操作ミス・事故からの復旧手順 |
 
 ## エージェント制御系スキル
 
 | スキル | 用途 |
 |--------|------|
-| dispatching-parallel-agents | 並列サブエージェントの起動 |
+| dispatching-parallel-agents | 並列サブエージェントの起動（必読ファイルリスト返却ルール付き） |
 | subagent-driven-development | サブエージェントを活用した開発 |
 
 ## メタスキル
@@ -95,6 +97,16 @@ If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the 
 | スキル | 用途 |
 |--------|------|
 | writing-skills | 新しいスキルの作成方法 |
+
+# Available Agents
+
+`agents/` ディレクトリにある特化エージェント。Agent ツール（subagent_type）から呼び出す。Skill ツールの対象ではない。
+
+| エージェント | 用途 |
+|--------|------|
+| code-explorer | 既存コードベースを調査して構造化サマリと「必読ファイルリスト」を返す。新機能設計・project-migration・仕様変更の影響範囲特定に使う |
+| code-architect | 既存パターンを尊重した実装ブループリント（focus: minimal/clean/pragmatic 等）を返す。複数体並列起動で多面的な比較材料を作る |
+| code-reviewer | コードレビューを行い、信頼度 80 以上の指摘のみを Critical/Important/NFR 違反 で返す |
 
 # Using Skills
 
