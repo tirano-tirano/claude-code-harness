@@ -1,6 +1,8 @@
 {
   "name": "claude-code-harness",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "description": "Claude Code 向けスキルベース開発ワークフロー（ドキュメント駆動 + 外側→内側TDD）",
+  "license": "MIT",
   "type": "module",
-  "main": ".opencode/plugins/superpowers.js"
+  "private": true
 }
