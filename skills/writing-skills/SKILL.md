@@ -633,6 +633,44 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 - [ ] Commit skill to git and push to your fork (if configured)
 - [ ] Consider contributing back via PR (if broadly useful)
 
+## ★ harness 固有の必須運用ルール
+
+新しいスキル・新しいエージェントを追加したときは、**必ず以下のファイルも同じコミット内で更新する**。
+これを忘れると、Claude Code が新スキル・新エージェントの存在を認識できず、
+作っても呼び出されない「事実上の死蔵」状態になる。
+
+### 新規スキル追加時に必ず更新するファイル
+
+| ファイル | なぜ更新が必要か |
+|---|---|
+| `skills/using-superpowers/SKILL.md` の "Available Skills" 一覧表 | session-start hook がこのファイルを読んで、セッション開始時に Claude へ通知するスキル一覧を生成する。一覧に無いスキルは存在しないものと扱われる |
+| `skills/using-superpowers/SKILL.md` の "スキル選択の典型パターン" 表 | ユーザー指示と最初に呼ぶスキルの対応表。新スキルが該当する典型パターンを追加する |
+| `README.md` の「スキル一覧」 | ユーザー向けの公開ドキュメント |
+| `CLAUDE.md` の「ファイル構成」セクション内の skills 数 | プロジェクトルートの CLAUDE.md。総数を整合させる |
+
+### 新規エージェント追加時に必ず更新するファイル
+
+| ファイル | なぜ更新が必要か |
+|---|---|
+| `skills/using-superpowers/SKILL.md` の "Available Agents" セクション | スキルと同じく、ここに無いエージェントはメイン Claude が認識できない |
+| `README.md` の「エージェント一覧」 | ユーザー向けの公開ドキュメント |
+| `CLAUDE.md` の agents 行 | プロジェクトルートの CLAUDE.md。エージェント名を列挙する |
+
+### 確認手順
+
+1. 上記ファイルを更新する
+2. `bash hooks/session-start <<< '{"hook_event_name":"SessionStart","matcher":"startup"}'` を実行
+3. 出力に新スキル・新エージェント名が含まれることを grep で確認
+4. すべてが含まれていることを確認してからコミット
+
+### Red Flag
+
+| 思考 | 正しい対応 |
+|---|---|
+| 「skill ファイルを作っただけで動くはず」 | using-superpowers/SKILL.md を更新しないと認識されない |
+| 「ドキュメントは後で追加する」 | hook 出力に出ないと事実上未デプロイ。同コミットで更新する |
+| 「スキル数の表記は些細」 | CLAUDE.md は毎セッション読み込まれる。実態と乖離するとバイアスになる |
+
 ## Discovery Workflow
 
 How future Claude finds your skill:

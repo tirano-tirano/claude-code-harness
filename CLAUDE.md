@@ -21,6 +21,7 @@
 - 単体で動作確認すれば OK（コミット前に1セッションで挙動を確認）
 - 影響範囲が局所的なので比較的気軽に試せる
 - 信頼度スコア・出力フォーマット等の変更は agent ファイル内で完結させる
+- **新規エージェント追加時は同コミット内で `skills/using-superpowers/SKILL.md` の "Available Agents" セクションも更新する**（一覧に無いとメイン Claude が認識しない）
 
 ### skills/SKILL.md の変更
 
@@ -28,6 +29,8 @@
 - 既存スキルへの追記: 1セッションで挙動確認してからコミット
 - 新規スキル追加: 2-3セッションで実際に呼び出されるか・期待通り動くかを確認
 - Red Flags テーブル・Rationalization List 等の挙動制御の核となる文言を変えるときは、変更前後の挙動比較を `docs/notes/` に記録する
+- **新規スキル追加時は同コミット内で `skills/using-superpowers/SKILL.md` の "Available Skills" 一覧表と「スキル選択の典型パターン」表も更新する**（session-start hook がこのファイルを読む。一覧に無いスキルは事実上未デプロイ）
+- 詳細な手順とチェックリストは `skills/writing-skills/SKILL.md` の「★ harness 固有の必須運用ルール」セクションを参照
 
 ### 設計思想に関わる変更
 
