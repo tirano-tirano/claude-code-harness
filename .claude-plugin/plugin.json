@@ -1,6 +1,6 @@
 {
   "name": "claude-code-harness",
-  "description": "Forked from obra/superpowers. Document-driven development, comprehensive testing, UI design, and proven workflow skills for Claude Code.",
+  "description": "ドキュメント駆動開発 × 外側→内側TDD × Ralph Loop 連携で、Claude Code に一貫した開発フローを提供するスキル群。obra/superpowers をベースに日本語化・harness 流に再構築。",
   "version": "1.1.0",
   "author": {
     "name": "尚志"

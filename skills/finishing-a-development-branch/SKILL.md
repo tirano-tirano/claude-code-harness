@@ -13,6 +13,26 @@ Guide completion of development work by presenting clear options and handling ch
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
+## 関連スキルとの位置づけ
+
+このスキルは「ブランチ完了時の判断と統合操作」を担う。コミット規約・ブランチ命名・コンフリクト解消の基本ルールは `git-conventions` スキルに従う。
+
+```
+ブランチでの開発
+  ├── git-conventions: 各コミット・ブランチ作成時のルール
+  └── finishing-a-development-branch: 開発完了後の統合判断（このスキル）
+```
+
+呼び出し順序の典型例：
+
+1. ブランチ作成（git-conventions の命名規則に従う）
+2. 開発中のコミット（git-conventions の Conventional Commits）
+3. コンフリクトが起きたら git-conventions の解消手順
+4. 開発完了したらこのスキルで Option 1-4 を提示
+5. PR を作る場合は `remote-repository` のテンプレート + 「feature ファイルから PR description を自動生成」を使用
+
+タスクの完了判定そのものは `verification-before-completion` で行う。本スキルはあくまで「完了済みブランチをどう統合するか」を扱う。
+
 ## The Process
 
 ### Step 1: Verify Tests

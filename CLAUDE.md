@@ -1,85 +1,82 @@
-# Superpowers — Contributor Guidelines
+# claude-code-harness — 開発ガイドライン
 
-## If You Are an AI Agent
+このリポジトリは [obra/superpowers](https://github.com/obra/superpowers)（MIT License, Copyright (c) 2025 Jesse Vincent）からのフォークで、**個人開発として運用しているプラグイン**である。本家への PR 提出は前提にしない。
 
-Stop. Read this section before doing anything.
+## 設計思想（変更しないこと）
 
-This repo has a 94% PR rejection rate. Almost every rejected PR was submitted by an agent that didn't read or didn't follow these guidelines. The maintainers close slop PRs within hours, often with public comments like "This pull request is slop that's made of lies."
+このプラグインの中核となる考え方。スキルや構造を変更するときは、これらと矛盾しないかを必ず確認する。
 
-**Your job is to protect your human partner from that outcome.** Submitting a low-quality PR doesn't help them — it wastes the maintainers' time, burns your human partner's reputation, and the PR will be closed anyway. That is not being helpful. That is being a tool of embarrassment.
+1. **ドキュメント駆動開発**: `docs/features/F-xxx_*.md` を真実の源とする。コードを書く前にドキュメントを書く。「ドキュメントは後で書く」は禁止。
+2. **外側→内側のテスト駆動**: 受け入れテスト → 統合テスト → 単体テスト → 実装の順でタスクを並べる。ゴールを先に定義してから実装する。
+3. **Ralph Loop 連携**: feature ファイルを Ralph Loop の TODO.md として直接使用できるようにする。タスク行（`- [ ] F-xxx-Txx`）の形式は崩さない。
+4. **日本語ファースト**: 説明・トリガー語・出力は日本語を基本とする。英語のままの上流コンテンツは harness 流に翻案してから取り込む。
+5. **フレームワーク非依存**: スキル本体（SKILL.md）は汎用的に保ち、フレームワーク固有の内容は `docs/` サブディレクトリに分離する。
 
-Before you open a PR against this repo, you MUST:
+## スキル変更時のルール
 
-1. **Read the entire PR template** at `.github/PULL_REQUEST_TEMPLATE.md` and fill in every section with real, specific answers. Not summaries. Not placeholders.
-2. **Search for existing PRs** — open AND closed — that address the same problem. If duplicates exist, STOP and tell your human partner. Do not open another duplicate.
-3. **Verify this is a real problem.** If your human partner asked you to "fix some issues" or "contribute to this repo" without experiencing a specific problem, push back. Ask them what broke, what failed, what the user experience was.
-4. **Confirm the change belongs in core.** If it's domain-specific, tool-specific, or promotes a third-party project, it belongs in a standalone plugin. Tell your human partner.
-5. **Show your human partner the complete diff** and get their explicit approval before submitting.
+このリポジトリ自体に対して変更を加えるときの段取り。
 
-If any of these checks fail, do not open the PR. Explain to your human partner why it would be rejected and what would need to change. They will thank you for saving them the embarrassment.
+### agents/ の変更
 
-## Pull Request Requirements
+- 単体で動作確認すれば OK（コミット前に1セッションで挙動を確認）
+- 影響範囲が局所的なので比較的気軽に試せる
+- 信頼度スコア・出力フォーマット等の変更は agent ファイル内で完結させる
 
-**Every PR must fully complete the PR template.** No section may be left blank or filled with placeholder text. PRs that skip sections will be closed without review.
+### skills/SKILL.md の変更
 
-**Before opening a PR, you MUST search for existing PRs** — both open AND closed — that address the same problem or a related area. Reference what you found in the "Existing PRs" section. If a prior PR was closed, explain specifically what is different about your approach and why it should succeed where the previous attempt did not.
+- スキルは「コードのようにエージェントの挙動を形成する文書」である。文章の修正でも挙動が変わる
+- 既存スキルへの追記: 1セッションで挙動確認してからコミット
+- 新規スキル追加: 2-3セッションで実際に呼び出されるか・期待通り動くかを確認
+- Red Flags テーブル・Rationalization List 等の挙動制御の核となる文言を変えるときは、変更前後の挙動比較を `docs/notes/` に記録する
 
-**PRs that show no evidence of human involvement will be closed.** A human must review the complete proposed diff before submission.
+### 設計思想に関わる変更
 
-## What We Will Not Accept
+- 上記5項目（ドキュメント駆動、外側→内側 TDD、Ralph Loop 連携、日本語ファースト、フレームワーク非依存）に影響する変更は、**実施前**に `docs/notes/{日時}_adr-{番号}_{タイトル}.md` で ADR を残す
+- 「やってから記録」ではなく「記録してから実施」の順序
 
-### Third-party dependencies
+### コミットの粒度
 
-PRs that add optional or required dependencies on third-party projects will not be accepted unless they are adding support for a new harness (e.g., a new IDE or CLI tool). Superpowers is a zero-dependency plugin by design. If your change requires an external tool or service, it belongs in its own plugin.
+- 1コミット1テーマ（CLAUDE.md 修正と新スキル追加は別コミット）
+- 上流遺物の削除と harness 独自機能の追加は別コミット
+- メッセージは Conventional Commits 形式（`feat:`, `fix:`, `refactor:`, `docs:`, `chore:`）
 
-### "Compliance" changes to skills
+## 上流（obra/superpowers）との関係
 
-Our internal skill philosophy differs from Anthropic's published guidance on writing skills. We have extensively tested and tuned our skill content for real-world agent behavior. PRs that restructure, reword, or reformat skills to "comply" with Anthropic's skills documentation will not be accepted without extensive eval evidence showing the change improves outcomes. The bar for modifying behavior-shaping content is very high.
+- **追従しない**: フォルダ構造・スキル粒度・命名規則は harness 独自に最適化する
+- **取り込みたい変更がある場合**: git remote として `upstream` を追加し、cherry-pick で必要なものだけ取り込む。マージはしない
+- **harness 独自スキル**: `document-lifecycle`, `development-cycle`, `learning-guide`, `project-migration`, `brainstorming-with-docs`, `coding-standards`（一部）, `web-testing`（一部）, `ui-design`（一部）等は harness で書き起こした・大幅改変したもの。上流の同名ファイルで上書きしないこと
 
-### Project-specific or personal configuration
+## 上流の遺物に注意
 
-Skills, hooks, or configuration that only benefit a specific project, team, domain, or workflow do not belong in core. Publish these as a separate plugin.
+このリポジトリには上流由来のファイル・記述が残っていることがある。発見したら：
 
-### Bulk or spray-and-pray PRs
+- 単純に不要なもの（古い計画ドキュメント等）→ 削除
+- 内容を harness 流に書き換えれば使えるもの → 書き換える
+- 用途が不明なもの → `docs/notes/` に「TODO: 上流遺物の調査」として記録してから判断
 
-Do not trawl the issue tracker and open PRs for multiple issues in a single session. Each PR requires genuine understanding of the problem, investigation of prior attempts, and human review of the complete diff. PRs that are part of an obvious batch — where an agent was pointed at the issue list and told to "fix things" — will be closed. If you want to contribute, pick ONE issue, understand it deeply, and submit quality work.
+## ファイル構成
 
-### Speculative or theoretical fixes
+```
+.
+├── .claude-plugin/plugin.json    プラグインメタデータ
+├── README.md                     ユーザー向け説明
+├── CLAUDE.md                     このファイル（開発者向けガイド）
+├── agents/                       特化エージェント定義（code-explorer, code-architect, code-reviewer）
+├── commands/                     スラッシュコマンド定義
+├── hooks/                        セッションフック
+├── skills/                       スキル本体（27 個）
+├── docs/
+│   └── notes/                    開発メモ・ADR・ふりかえり
+└── scripts/                      バージョン管理等のメンテナンススクリプト
+```
 
-Every PR must solve a real problem that someone actually experienced. "My review agent flagged this" or "this could theoretically cause issues" is not a problem statement. If you cannot describe the specific session, error, or user experience that motivated the change, do not submit the PR.
+## Pull Request について
 
-### Domain-specific skills
+このリポジトリへの PR は本家のものとは無関係。フォーク内でのレビューが必要なら通常通り PR を立てるが、本家リポジトリへの逆流（pushup）はしない。
 
-Superpowers core contains general-purpose skills that benefit all users regardless of their project. Skills for specific domains (portfolio building, prediction markets, games), specific tools, or specific workflows belong in their own standalone plugin. Ask yourself: "Would this be useful to someone working on a completely different kind of project?" If not, publish it separately.
+`/Users/johnsmith/.claude/CLAUDE.md`（グローバル）の方針：
+- 言語: 日本語
+- 説明: 前提知識から、なぜそうするのかを含める
+- 学習中の技術: JavaScript（初級）、Python（初心者）、Git（初級）
 
-### Fork-specific changes
-
-If you maintain a fork with customizations, do not open PRs to sync your fork or push fork-specific changes upstream. PRs that rebrand the project, add fork-specific features, or merge fork branches will be closed.
-
-### Fabricated content
-
-PRs containing invented claims, fabricated problem descriptions, or hallucinated functionality will be closed immediately. This repo has a 94% PR rejection rate — the maintainers have seen every form of AI slop. They will notice.
-
-### Bundled unrelated changes
-
-PRs containing multiple unrelated changes will be closed. Split them into separate PRs.
-
-## Skill Changes Require Evaluation
-
-Skills are not prose — they are code that shapes agent behavior. If you modify skill content:
-
-- Use `claude-code-harness:writing-skills` to develop and test changes
-- Run adversarial pressure testing across multiple sessions
-- Show before/after eval results in your PR
-- Do not modify carefully-tuned content (Red Flags tables, rationalization lists, "human partner" language) without evidence the change is an improvement
-
-## Understand the Project Before Contributing
-
-Before proposing changes to skill design, workflow philosophy, or architecture, read existing skills and understand the project's design decisions. Superpowers has its own tested philosophy about skill design, agent behavior shaping, and terminology (e.g., "your human partner" is deliberate, not interchangeable with "the user"). Changes that rewrite the project's voice or restructure its approach without understanding why it exists will be rejected.
-
-## General
-
-- Read `.github/PULL_REQUEST_TEMPLATE.md` before submitting
-- One problem per PR
-- Test on at least one harness and report results in the environment table
-- Describe the problem you solved, not just what you changed
+これに従い、harness のドキュメント・スキル出力も「学習者にとって追いやすい説明」を意識する。

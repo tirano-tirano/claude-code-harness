@@ -11,6 +11,24 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 
 **Core principle:** Fresh subagent per task + two-stage review (spec then quality) = high quality, fast iteration
 
+## 関連スキルとの違い（4 方式の使い分け）
+
+タスクを実行する方式は harness では 4 つある。混同しないこと：
+
+| 方式 | このスキル | 適する場面 |
+|------|---|---|
+| **Ralph Loop** | 別 | 夜間実行・大量タスク・無人運用 |
+| **subagent-driven-development**（**このスキル**） | これ | 順序を守る計画を、各タスクごとに subagent + 2段階レビューで実行 |
+| **dispatching-parallel-agents** | 別 | 順序関係のない**独立した複数の問題**を並列分担（バグ修正・調査） |
+| **executing-plans** | 別 | 対話的に手動で順次実行（小規模タスク） |
+
+**特に dispatching-parallel-agents との違い:**
+- このスキル（SDD）は「**1つの計画**の依存タスクを順序通りに進める」もの
+- dispatching-parallel-agents は「**独立した複数の問題**を並列で別々のエージェントが処理する」もの
+- SDD で並列起動するわけではない。1タスク1サブエージェントを順次
+
+詳しい比較マップは `executing-plans/SKILL.md` の「実行方法の選択」セクションを参照。
+
 ## When to Use
 
 ```dot
