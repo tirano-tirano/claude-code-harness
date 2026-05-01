@@ -64,7 +64,7 @@
 ├── agents/                       特化エージェント定義（code-explorer, code-architect, code-reviewer）
 ├── commands/                     スラッシュコマンド定義
 ├── hooks/                        セッションフック
-├── skills/                       スキル本体（27 個）
+├── skills/                       スキル本体（28 個）
 ├── docs/
 │   └── notes/                    開発メモ・ADR・ふりかえり
 └── scripts/                      バージョン管理等のメンテナンススクリプト
