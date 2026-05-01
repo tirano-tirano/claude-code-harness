@@ -11,6 +11,25 @@ Claiming work is complete without verification is dishonesty, not efficiency.
 
 **Core principle:** Evidence before claims, always.
 
+## 関連スキルとの位置づけ
+
+このスキルは「完了前検証」の総合的な実施を担う。コードレビュー依頼そのものは `requesting-code-review` スキルが担当する。
+
+```
+タスク完了
+  ├── verification-before-completion: テスト・ドキュメント・進捗の整合性チェック（このスキル）
+  └── requesting-code-review: コードレビュー依頼（信頼度80以上の指摘を取得）
+```
+
+両者は通常セットで使う：
+
+1. このスキルでテスト緑・ドキュメント整合・feature ファイル進捗を確認
+2. `requesting-code-review` で第三者視点（code-reviewer エージェント）を得る
+3. レビュー指摘（Critical / Important / NFR 違反）に対処
+4. 再度このスキルで完了を確定
+
+PR を作成する場合は、加えて `remote-repository` の「feature ファイルから PR description を自動生成」セクションを参照する。
+
 **Violating the letter of this rule is violating the spirit of this rule.**
 
 ## The Iron Law

@@ -9,6 +9,25 @@ description: "Use when completing tasks, implementing major features, or before 
 
 **Core principle:** Review early, review often.
 
+## 関連スキルとの位置づけ
+
+このスキルは「完了前検証」の中の **コードレビュー部分** を担う。タスク完了の総合的な検証は `verification-before-completion` が担当する。
+
+```
+タスク完了
+  ├── verification-before-completion: テスト・ドキュメント・進捗の整合性チェック
+  └── requesting-code-review: コードレビュー依頼（このスキル）
+```
+
+両者は通常セットで使う：
+
+1. テスト緑・ドキュメント整合を verification-before-completion で確認
+2. その上で requesting-code-review で第三者視点を得る
+3. レビュー指摘（信頼度 80 以上）に対処
+4. 再度 verification-before-completion で完了を確定
+
+なお `subagent-driven-development` は **タスクごとに** このスキルを呼ぶ two-stage review を組み込んでいる（spec compliance + code quality）。
+
 ## When to Request Review
 
 **Mandatory:**
